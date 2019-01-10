@@ -1,4 +1,9 @@
 class Knight
+  attr_reader :from
+  
+  def initialize(from)
+    @from = from
+  end
   # Represents all possible moves a Knight 
   # can make on the chessboard
   @@moves = [

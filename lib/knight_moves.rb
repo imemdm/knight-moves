@@ -1,36 +1,48 @@
 require "./lib/Knight"
 
-# Create an 8x8 edge list
-def create_board
-  board = []
-  for i in (0..7)
-    for j in (0..7)
-      board << [i, j]
-    end
-  end
-  board
-end
-
-def bfs(from, to)
-  parents = []
-
+# Use Breadth first search, and connect each found
+# node to its parent
+def bfs(knight, to)
+  relationships = []
   q = []
-  q << from
+  q << knight.from
 
   node = nil
-  parent = nil
   until(q.empty?)
+    
     if to == q.first
       node = to
       break
     end
 
-    parents << [parent, q.first]
+    knight.valid_moves(q.first).each do |move|
+      q << move
+      relationships << [q.first, move]
+    end
     
-    
-    parent = q.shift
+    q.shift
   end
 
-  p parents.reverse
-  return node
+  return relationships
+end
+
+
+# Get pair 
+def knight_moves(from, to)
+  k = Knight.new(from)
+
+  # Get [parent, node] pairs
+  pairs = bfs(k, to)
+
+  path = []
+  # Backtrack along the pair array to find
+  # the given path
+  pairs.reverse.each do |pair|
+    if pair[1] == to
+      path << pair[1]
+      to = pair[0]
+    end
+  end
+  path << from
+  path.reverse
 end
