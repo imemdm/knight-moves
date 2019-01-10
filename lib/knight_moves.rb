@@ -23,19 +23,12 @@ def bfs(knight, to)
     q.shift
   end
 
-  return relationships
+  relationships
 end
 
-
-# Get pair 
-def knight_moves(from, to)
-  k = Knight.new(from)
-
-  # Get [parent, node] pairs
-  pairs = bfs(k, to)
-
+def get_path(pairs, from, to)
   path = []
-  # Backtrack along the pair array to find
+  # Backtrack along the pairs array to find
   # the given path
   pairs.reverse.each do |pair|
     if pair[1] == to
@@ -46,3 +39,20 @@ def knight_moves(from, to)
   path << from
   path.reverse
 end
+
+def show_result(path)
+  puts "You made it in #{path.length - 1} moves. Path: "
+  path.each { |sq| puts sq.to_s}
+end
+
+def knight_moves(from, to)
+  k = Knight.new(from)
+
+  # Get [parent, node] pairs
+  pairs = bfs(k, to)
+
+  path = get_path(pairs, from, to)
+
+  show_result(path)
+end
+
